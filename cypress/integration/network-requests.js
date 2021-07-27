@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
 describe("Network Requests", () => {
+    let message = "Unable to find comment!"
+
     beforeEach(() => {
         cy.visit("https://example.cypress.io/commands/network-requests")
 
@@ -29,7 +31,7 @@ describe("Network Requests", () => {
         cy.wait("@getComment").its("status").should("eq", 200)
     })
 
-    it.only("Post Request", () => {
+    it("Post Request", () => {
         cy.route("POST", "/comments").as("postComment");
 
         cy.get(".network-post").click();
@@ -41,5 +43,19 @@ describe("Network Requests", () => {
         })
     })
 
-    it()
+    it.only("Put Request", () => {
+        cy.route({
+            method: "PUT",
+            url: "comments/*",
+            status: 404,
+            response: { error: message},
+            delay: 500
+        }).as("putComment");
+
+        cy.get(".network-put").click();
+
+        cy.wait("@putComment")
+
+        cy.get(".network-put-comment").should("contain", message)
+    })
 })
