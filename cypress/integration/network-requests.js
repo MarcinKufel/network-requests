@@ -12,6 +12,18 @@ describe("Network Requests", () => {
         //Listen to GET requests which use the following: comment/ within the url
         //cy.route("GET", "comments/*").as("getComment");
 
+        cy.route({
+            method: "GET",
+            url: "comments/*",
+            response: {
+                "postId": 1,
+                "id": 1,
+                "name": "id labore ex et quam laborum",
+                "email": "Eliseo@gardner.biz",
+                "body": "Hello World!"
+              }
+        }).as("getComment");
+
         cy.get(".network-btn").click();
 
         cy.wait("@getComment").its("status").should("eq", 200)
