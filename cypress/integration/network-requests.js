@@ -28,4 +28,18 @@ describe("Network Requests", () => {
 
         cy.wait("@getComment").its("status").should("eq", 200)
     })
+
+    it.only("Post Request", () => {
+        cy.route("POST", "/comments").as("postComment");
+
+        cy.get(".network-post").click();
+
+        cy.wait("@postComment").should((xhr) => {
+            expect(xhr.requestBody).to.include("email");
+            expect(xhr.responseBody).to.have.property("name", "Using POST in cy.intercept()")
+            expect(xhr.requestHeaders).to.have.property("Content-Type");
+        })
+    })
+
+    it()
 })
