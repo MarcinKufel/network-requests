@@ -43,7 +43,7 @@ describe("Network Requests", () => {
         })
     })
 
-    it.only("Put Request", () => {
+    it("Put Request", () => {
         cy.route({
             method: "PUT",
             url: "comments/*",
